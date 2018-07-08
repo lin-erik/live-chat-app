@@ -13,4 +13,19 @@ class IndexPage extends Component {
     }
   }
 
+  render() {
+    const {user} = this.state;
+
+    const nameInput = {
+      background: 'transparent',
+      color: '#999',
+      border: 0,
+      border-bottom: '1px solid #666',
+      border-radius: 0,
+      font-size: '3rem',
+      font-weight: 500,
+      box-shadow: 'none !important'
+    };
+
+  }
 }
