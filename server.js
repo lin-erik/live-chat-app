@@ -7,7 +7,7 @@ const dotenv = require('dotenv').config();
 const Sentiment = require('sentiment');
 
 const dev = process.env.NODE_ENV !== 'production';
-const port = process.env.PORT || 3000;
+const port = 3000;
 
 const app = next({dev});
 const handler = app.getRequestHandler();
@@ -23,7 +23,7 @@ const pusher = new Pusher({
 
 app.prepare()
    .then( () => {
-     var server = express();
+     const server = express();
 
      server.use(cors());
      server.use(bodyParser.json());
@@ -33,7 +33,7 @@ app.prepare()
        return handler(req, res);
      });
 
-     server.listen( (port, err) => {
+     server.listen( port, err => {
        if (err) throw err;
 
        console.log(`Server ready, listening on port ${port}`);
