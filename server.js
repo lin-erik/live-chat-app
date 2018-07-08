@@ -36,10 +36,10 @@ app.prepare()
      server.listen( (port, err) => {
        if (err) throw err;
 
-       console.log(`Server ready, listening on port $(port)`);
-     });
-     .catch( (err) => {
-       console.error(err);
-       process.exit(1);
+       console.log(`Server ready, listening on port ${port}`);
      });
    })
+   .catch( (err) => {
+     console.error(err);
+     process.exit(1);
+   });
