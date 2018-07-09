@@ -8,26 +8,33 @@ class Chat extends Component {
   }
 
   componentDidMount() {
-    this.pusher = new Pusher(process.env.PUSHER_APP_KEY, {
+    this.pusher = new Pusher({
+      appID: process.env.PUSHER_APP_ID,
+      key: process.env.PUSHER_APP_KEY,
+      secret: process.env.PUSHER_APP_SECRET,
       cluster: process.env.PUSHER_APP_CLUSTER,
       encrypted: true
     });
 
     this.channel = this.pusher.subscribe('chat-room');
 
-    this.channel.bind('new-message', ( {chat = null} )) => {
+    this.channel.bind('new-message', ( {chat = null} ) => {
       const {chats} = this.state;
       chat && chats.push(chat);
       this.setState({chats});
     });
 
-    this.pusher.connection.bind('connected', () => {
+  this.pusher.connection.bind('connected', () => {
       axios.post('/messages')
            .then(response => {
              const chats = response.data.messages;
              this.setState({chats});
            });
     });
+  }
+
+  componentWillUnmount() {
+    this.pusher.disconnect();
   }
 
   handleKeyUp = (event) => {
