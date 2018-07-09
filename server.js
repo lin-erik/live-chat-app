@@ -35,6 +35,10 @@ app.prepare()
        pusher.trigger('chat-room', 'new-message', {chat});
      });
 
+     server.post('/messages', (req, res, next) => {
+       res.json({...chatHistory, status: 'success'});
+     });
+
      server.listen( port, err => {
        if (err) throw err;
        const thing = process.env.PUSHER_APP_KEY;
