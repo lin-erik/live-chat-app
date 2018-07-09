@@ -13,17 +13,10 @@ const app = next({dev});
 const handler = app.getRequestHandler();
 const sentiment = new Sentiment();
 
-const pusher = new Pusher({
-  appID: process.env.PUSHER_APP_ID,
-  key: process.env.PUSHER_APP_KEY,
-  secret: process.env.PUSHER_APP_SECRET,
-  cluster: process.env.PUSHER_APP_CLUSTER,
-  encrypted: true
-});
-
 app.prepare()
    .then( () => {
      const server = express();
+     const chatHistory = {messages: []};
 
      server.use(cors());
      server.use(bodyParser.json());
@@ -33,9 +26,18 @@ app.prepare()
        return handler(req, res);
      });
 
+     server.post('/message', (req, res, next) => {
+       const {user = null, message = '', timestamp = +new Date} = req.body;
+       const sentimentScore = sentiment.analyze(message).score;
+       const chat = {user, message, timestamp, sentiment: sentimentScore};
+
+       chatHistory.messages.push(chat);
+       pusher.trigger('chat-room', 'new-message', {chat});
+     });
+
      server.listen( port, err => {
        if (err) throw err;
-
+       const thing = process.env.PUSHER_APP_KEY;
        console.log(`Server ready, listening on port ${port}`);
      });
    })
