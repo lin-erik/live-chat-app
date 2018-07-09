@@ -2,6 +2,7 @@ import React, { Component, Fragment } from 'react';
 import axios from 'axios';
 import Pusher from 'pusher-js';
 import ChatMessage from './ChatMessage';
+import keys from '../keys.js';
 
 const SAD_EMOJI = [55357, 56864];
 const HAPPY_EMOJI = [55357, 56832];
@@ -13,8 +14,8 @@ class Chat extends Component {
   }
 
   componentDidMount() {
-    this.pusher = new Pusher(process.env.PUSHER_APP_KEY, {
-      cluster: process.env.PUSHER_APP_CLUSTER,
+    this.pusher = new Pusher(keys.PUSHER_APP_KEY, {
+      cluster: keys.PUSHER_APP_CLUSTER,
       encrypted: true
     });
 

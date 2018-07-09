@@ -7,11 +7,19 @@ const dotenv = require('dotenv').config();
 const Sentiment = require('sentiment');
 
 const dev = process.env.NODE_ENV !== 'production';
-const port = 3000;
+const port = process.env.PORT || 3000;
 
 const app = next({dev});
 const handler = app.getRequestHandler();
 const sentiment = new Sentiment();
+
+const pusher = new Pusher({
+  appId: process.env.PUSHER_APP_ID,
+  key: process.env.PUSHER_APP_KEY,
+  secret: process.env.PUSHER_APP_SECRET,
+  cluster: process.env.PUSHER_APP_CLUSTER,
+  encrypted: true
+});
 
 app.prepare()
    .then( () => {
@@ -27,6 +35,7 @@ app.prepare()
      });
 
      server.post('/message', (req, res, next) => {
+
        const {user = null, message = '', timestamp = +new Date} = req.body;
        const sentimentScore = sentiment.analyze(message).score;
        const chat = {user, message, timestamp, sentiment: sentimentScore};
@@ -41,11 +50,11 @@ app.prepare()
 
      server.listen( port, err => {
        if (err) throw err;
-       const thing = process.env.PUSHER_APP_KEY;
+
        console.log(`Server ready, listening on port ${port}`);
      });
    })
    .catch( (err) => {
-     console.error(err);
+     console.error('error in server', err);
      process.exit(1);
    });

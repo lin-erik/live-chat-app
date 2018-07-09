@@ -1,0 +1,6 @@
+module.exports = {
+  PUSHER_APP_ID: "ID",
+  PUSHER_APP_KEY: "KEY",
+  PUSHER_APP_SECRET: "SECRET",
+  PUSHER_APP_CLUSTER: "CLUSTER"
+};
