@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import Layout from '../components/Layout';
+import Layout from '../components/Layout.js';
+import Chat from '../components/Chat.js'
 
 class IndexPage extends Component {
   state = {
@@ -39,12 +40,12 @@ class IndexPage extends Component {
                              </span> ) : 'What is your name?'
                   }
                 </span>
-                
+
                 {!user && <input type='text' className='form-control mt-3 px-3 py-2' onKeyUp={this.handleKeyUp} autoComplete='off' style={nameInput} />}
               </div>
             </section>
 
-            <section className='col-md-4 position-relative d-flex flex-wrap h-100 align-items-start align-content-bwetween bg-white px-0'></section>
+            <section className='col-md-4 position-relative d-flex flex-wrap h-100 align-items-start align-content-between bg-white px-0'>{user && <Chat activeUser={user} />}</section>
           </div>
         </main>
       </Layout>
